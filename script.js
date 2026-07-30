@@ -15,7 +15,7 @@ const UNLOCK_CODES = {
   analisis: "ALUR-ANALISIS",
   desain:   "ALUR-DESAINALGO",
   coding:   "ALUR-CODING3",
-  testing:  "ALUR-TESTING4",
+  testing:  "TESTING",
 };
 
 /* Urutan resmi section, dipakai untuk sidebar & navigasi */
@@ -76,7 +76,6 @@ function saveResult(id, label, part, correct, total) {
 function goSection(key) {
   const meta = SECTION_ORDER.find(s => s.key === key);
   if (!meta) return;
-  if (meta.gate && !state.unlocked.includes(key)) return; // terkunci
   document.querySelectorAll(".section").forEach(el => el.classList.remove("visible"));
   const el = document.getElementById("sec-" + key);
   if (el) el.classList.add("visible");
