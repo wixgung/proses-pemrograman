@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belajar Excel dari Nol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#14532D;
+    --green:#1D6F42;
+    --green-bright:#2E9E5B;
+    --lime:#A8D08D;
+    --amber:#E8A33D;
+    --amber-deep:#C97D1F;
+    --ink:#1B1B18;
+    --paper:#FAF9F5;
+    --paper-dim:#F1EFE8;
+    --grid-line:#D6D3C9;
+    --grid-line-strong:#B9B5A7;
+    --white:#ffffff;
+    --danger:#C74B3F;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.disp{font-family:'Space Grotesk', sans-serif;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:inherit;}
+  img,svg{display:block;}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 24px;}
+
+  /* ---------- NAV ---------- */
+  nav.topnav{
+    position:sticky; top:0; z-index:50;
+    background:var(--green-deep);
+    border-bottom:3px solid var(--amber);
+  }
+  nav.topnav .wrap{display:flex; align-items:center; gap:4px; overflow-x:auto; padding-top:0; padding-bottom:0;}
+  .brand{
+    color:var(--white); font-family:'Space Grotesk',sans-serif; font-weight:700;
+    font-size:15px; padding:14px 18px 14px 0; white-space:nowrap; display:flex; align-items:center; gap:8px;
+  }
+  .brand .sq{width:14px; height:14px; background:var(--amber); border-radius:2px; display:inline-block;}
+  nav.topnav .links{display:flex; gap:2px; margin-left:auto;}
+  nav.topnav .links button{
+    color:#D7E4DA; text-decoration:none; font-size:13.5px; font-weight:600; font-family:inherit;
+    padding:16px 14px; white-space:nowrap; border-bottom:3px solid transparent; margin-bottom:-3px;
+    transition:.15s; background:none; border-top:none; border-left:none; border-right:none; cursor:pointer;
+  }
+  nav.topnav .links button:hover{color:var(--white); border-color:var(--lime);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      linear-gradient(180deg, var(--green-deep) 0%, var(--green) 100%);
+    color:var(--white);
+    padding:64px 0 0 0;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .wrap{position:relative; z-index:2; padding-bottom:0;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:.04em;
+    background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25);
+    padding:6px 12px; border-radius:20px; color:var(--lime);
+  }
+  .hero h1{
+    font-size:clamp(32px,5.4vw,54px); line-height:1.06; margin:20px 0 16px; font-weight:700;
+    max-width:780px;
+  }
+  .hero h1 .cellbox{
+    display:inline-block; border:2.5px solid var(--amber); padding:2px 10px; border-radius:4px;
+    background:rgba(232,163,61,.12);
+  }
+  .hero p.lead{max-width:560px; font-size:17px; color:#E4EEE7; margin-bottom:30px;}
+  .hero .cta-row{display:flex; gap:12px; flex-wrap:wrap; padding-bottom:44px;}
+  .btn{
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px;
+    padding:13px 24px; border-radius:6px; border:none; cursor:pointer;
+    text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--amber); color:var(--green-deep); box-shadow:0 4px 0 var(--amber-deep);}
+  .btn-primary:hover{box-shadow:0 5px 0 var(--amber-deep); transform:translateY(-1px);}
+  .btn-ghost{background:transparent; color:var(--white); border:1.5px solid rgba(255,255,255,.5);}
+  .btn-ghost:hover{border-color:var(--white); background:rgba(255,255,255,.08);}
+
+  /* hero mini sheet strip */
+  .heroStrip{
+    display:grid; grid-template-columns:36px repeat(6,1fr);
+    border:1px solid rgba(255,255,255,.18); border-radius:8px 8px 0 0; overflow:hidden;
+    background:rgba(255,255,255,.05);
+  }
+  .heroStrip .hc{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; text-align:center; padding:8px 4px;
+    color:#BFD9C8; border-left:1px solid rgba(255,255,255,.12); border-bottom:1px solid rgba(255,255,255,.12);
+  }
+  .heroStrip .hc:first-child{border-left:none; background:rgba(255,255,255,.06);}
+  .heroStrip .filled{background:rgba(168,208,141,.18); color:var(--lime); font-weight:600;}
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:64px 0;}
+  .kicker{
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--green);
+    letter-spacing:.05em; text-transform:uppercase; font-weight:600; margin-bottom:10px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .kicker::before{content:''; width:22px; height:2px; background:var(--amber); display:inline-block;}
+  h2.sectitle{font-size:clamp(24px,3.4vw,32px); margin-bottom:14px; color:var(--green-deep);}
+  p.sectdesc{max-width:640px; color:#4B4A44; font-size:15.5px; margin-bottom:36px;}
+
+  /* ---------- INTRO CARDS ---------- */
+  .cardgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;}
+  .card{
+    background:var(--white); border:1px solid var(--grid-line); border-radius:10px; padding:22px;
+    border-top:3px solid var(--green);
+  }
+  .card .ic{font-size:22px; margin-bottom:10px;}
+  .card h3{font-size:16px; margin-bottom:6px; color:var(--green-deep);}
+  .card p{font-size:13.8px; color:#5A594F;}
+
+  /* ---------- TERM GLOSSARY ---------- */
+  .termgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px;}
+  .term{
+    background:var(--white); border:1px solid var(--grid-line); border-radius:10px;
+    padding:18px 20px; position:relative; cursor:default;
+  }
+  .term .tnum{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--amber-deep);
+    background:#FDF3E3; border:1px solid #F0D9AE; padding:2px 7px; border-radius:20px;
+    display:inline-block; margin-bottom:10px;
+  }
+  .term h3{font-size:16px; color:var(--green-deep); margin-bottom:6px;}
+  .term p{font-size:13.5px; color:#5A594F;}
+  .term code{
+    font-family:'IBM Plex Mono',monospace; background:var(--paper-dim); border:1px solid var(--grid-line);
+    padding:1px 6px; border-radius:4px; font-size:12.5px; color:var(--green-deep);
+  }
+
+  /* ---------- EXCEL MOCK ---------- */
+  .mockWrap{
+    background:var(--white); border:1px solid var(--grid-line-strong); border-radius:10px;
+    overflow:hidden; box-shadow:0 10px 30px -12px rgba(20,83,45,.25);
+    user-select:none;
+    position:relative;
+  }
+  .qat{
+    display:flex; align-items:center; gap:10px; background:var(--green-deep); color:#DCE9DF;
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; padding:6px 12px; position:relative;
+  }
+  .qat .dots{display:flex; gap:5px;}
+  .qat .dots span{width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.35);}
+  .ribbonTabs{
+    display:flex; gap:2px; background:var(--green); padding:0 10px; position:relative;
+  }
+  .ribbonTabs .rt{
+    font-size:12.5px; font-weight:600; color:#DCE9DF; padding:9px 14px; cursor:pointer;
+    border-bottom:3px solid transparent;
+  }
+  .ribbonTabs .rt.active{background:var(--paper); color:var(--green-deep); border-radius:6px 6px 0 0;}
+  .ribbonBar{
+    background:var(--paper); border-bottom:1px solid var(--grid-line-strong);
+    display:flex; gap:18px; padding:8px 14px; position:relative; flex-wrap:wrap;
+  }
+  .ribbonGroup{display:flex; flex-direction:column; align-items:center; gap:4px; padding:0 10px; border-right:1px solid var(--grid-line);}
+  .ribbonGroup .icons{display:flex; gap:6px;}
+  .micon{width:20px; height:20px; border-radius:4px; background:#E3E7DE; border:1px solid var(--grid-line-strong);}
+  .ribbonGroup .glabel{font-size:9.5px; color:#8A897E; font-family:'IBM Plex Mono',monospace;}
+
+  .formulaRow{
+    display:flex; align-items:stretch; border-bottom:1px solid var(--grid-line-strong); position:relative;
+  }
+  .nameBox{
+    width:90px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; font-weight:600;
+    display:flex; align-items:center; justify-content:center; border-right:1px solid var(--grid-line-strong);
+    color:var(--green-deep); background:var(--paper);
+  }
+  .fx{width:30px; display:flex; align-items:center; justify-content:center; font-style:italic; font-size:13px; color:var(--green); border-right:1px solid var(--grid-line-strong);}
+  .fbar{flex:1; font-family:'IBM Plex Mono',monospace; font-size:12.5px; display:flex; align-items:center; padding:0 10px; color:#4B4A44;}
+
+  .sheetGrid{
+    display:grid; grid-template-columns:34px repeat(6,1fr);
+    position:relative;
+  }
+  .colhead{
+    background:var(--paper-dim); text-align:center; font-size:11.5px; font-weight:600; color:#8A897E;
+    padding:5px 0; border-bottom:1px solid var(--grid-line-strong); border-right:1px solid var(--grid-line);
+    font-family:'IBM Plex Mono',monospace; position:relative;
+  }
+  .corner{background:var(--paper-dim); border-bottom:1px solid var(--grid-line-strong); border-right:1px solid var(--grid-line-strong);}
+  .rowhead{
+    background:var(--paper-dim); text-align:center; font-size:11.5px; color:#8A897E;
+    border-right:1px solid var(--grid-line-strong); border-bottom:1px solid var(--grid-line);
+    font-family:'IBM Plex Mono',monospace; display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .cell{
+    border-right:1px solid var(--grid-line); border-bottom:1px solid var(--grid-line);
+    min-height:30px; position:relative; font-size:12px; padding:4px 6px; color:#3c3b35;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .cell.active{
+    outline:2px solid var(--green); outline-offset:-2px; background:rgba(46,158,91,.06); z-index:2;
+  }
+  .fillhandle{
+    position:absolute; width:7px; height:7px; background:var(--green); right:-4px; bottom:-4px; border-radius:1px; z-index:3;
+  }
+  .sheetTabsRow{
+    display:flex; align-items:center; gap:0; background:var(--paper-dim); border-top:1px solid var(--grid-line-strong);
+    padding:5px 10px; position:relative;
+  }
+  .sheetTab{
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; padding:5px 12px; border-radius:4px 4px 0 0;
+    color:#8A897E;
+  }
+  .sheetTab.active{background:var(--white); color:var(--green-deep); font-weight:600; box-shadow:0 -2px 0 var(--green) inset;}
+  .statusBar{
+    background:var(--green-deep); color:#CFE3D6; font-family:'IBM Plex Mono',monospace; font-size:11px;
+    display:flex; justify-content:space-between; padding:5px 12px; position:relative;
+  }
+
+  /* hotspot markers */
+  .hot{
+    position:absolute; width:22px; height:22px; border-radius:50%;
+    background:var(--amber); color:var(--green-deep); font-family:'IBM Plex Mono',monospace;
+    font-weight:700; font-size:11px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; border:2px solid var(--white); box-shadow:0 2px 6px rgba(0,0,0,.25);
+    transform:translate(-50%,-50%); z-index:10; transition:transform .12s;
+    animation:pulse 2.2s infinite;
+  }
+  .hot:hover{transform:translate(-50%,-50%) scale(1.18); animation:none;}
+  .hot.done{background:var(--lime); animation:none;}
+  @keyframes pulse{
+    0%,100%{box-shadow:0 2px 6px rgba(0,0,0,.25), 0 0 0 0 rgba(232,163,61,.5);}
+    50%{box-shadow:0 2px 6px rgba(0,0,0,.25), 0 0 0 6px rgba(232,163,61,0);}
+  }
+
+  .infoPanel{
+    margin-top:16px; background:var(--white); border:1px solid var(--grid-line); border-left:5px solid var(--green);
+    border-radius:8px; padding:16px 18px; display:none; animation:fadein .18s ease;
+  }
+  .infoPanel.show{display:block;}
+  @keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+  .infoPanel .ip-title{font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--green-deep); font-size:16px; margin-bottom:6px; display:flex; align-items:center; gap:8px;}
+  .infoPanel .ip-badge{font-family:'IBM Plex Mono',monospace; font-size:11px; background:var(--paper-dim); border:1px solid var(--grid-line); padding:2px 8px; border-radius:20px; color:#5A594F;}
+  .infoPanel p{font-size:14px; color:#4B4A44;}
+
+  .explorehint{font-size:13.5px; color:#5A594F; margin-bottom:16px; display:flex; align-items:center; gap:8px;}
+  .explorehint .dot{width:22px; height:22px; border-radius:50%; background:var(--amber); flex-shrink:0; display:inline-block;}
+
+  .progressline{display:flex; gap:6px; margin:18px 0 0;}
+  .progressline .pdot{width:10px; height:10px; border-radius:50%; background:var(--grid-line-strong);}
+  .progressline .pdot.on{background:var(--green);}
+
+  /* ---------- GAME "Tebak Bagian" ---------- */
+  .gamebox{
+    background:var(--green-deep); border-radius:12px; padding:26px; color:var(--white); margin-top:40px;
+  }
+  .gamebox .gtop{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:16px;}
+  .gamebox h3{font-size:19px;}
+  .score{font-family:'IBM Plex Mono',monospace; background:rgba(255,255,255,.12); padding:6px 14px; border-radius:20px; font-size:13.5px;}
+  .prompt{
+    background:var(--amber); color:var(--green-deep); font-family:'Space Grotesk',sans-serif; font-weight:700;
+    font-size:17px; padding:12px 18px; border-radius:8px; margin-bottom:16px; display:flex; align-items:center; gap:10px;
+  }
+  .feedback{font-family:'IBM Plex Mono',monospace; font-size:13.5px; min-height:20px; margin-top:12px;}
+  .feedback.ok{color:var(--lime);}
+  .feedback.bad{color:#F2A79A;}
+  .shake{animation:shakeAnim .3s;}
+  @keyframes shakeAnim{
+    0%,100%{transform:translate(-50%,-50%);}
+    25%{transform:translate(-58%,-50%);}
+    75%{transform:translate(-42%,-50%);}
+  }
+
+  /* ---------- QUIZ ---------- */
+  .quizCard{
+    background:var(--white); border:1px solid var(--grid-line); border-radius:10px; padding:26px 26px 22px;
+    margin-bottom:0;
+  }
+  .qhead{display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;}
+  .qhead .qnum{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--green); background:var(--paper-dim); padding:4px 10px; border-radius:20px;}
+  .qtext{font-size:17px; font-weight:600; margin-bottom:18px; color:var(--ink);}
+  .options{display:flex; flex-direction:column; gap:10px;}
+  .opt{
+    text-align:left; background:var(--paper); border:1.5px solid var(--grid-line); border-radius:8px;
+    padding:13px 16px; font-size:14.5px; cursor:pointer; transition:.12s; font-family:'Inter',sans-serif;
+    display:flex; align-items:center; gap:10px;
+  }
+  .opt:hover{border-color:var(--green);}
+  .opt .oletter{
+    font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12px; width:22px; height:22px;
+    border-radius:5px; background:var(--paper-dim); display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .opt.correct{background:#E9F6EC; border-color:var(--green); color:var(--green-deep);}
+  .opt.correct .oletter{background:var(--green); color:#fff;}
+  .opt.wrong{background:#FCEBE8; border-color:var(--danger); color:#7A2C22;}
+  .opt.wrong .oletter{background:var(--danger); color:#fff;}
+  .opt.disabled{cursor:default; pointer-events:none;}
+  .qfeedback{font-size:13.5px; margin-top:14px; padding:10px 14px; border-radius:6px; display:none;}
+  .qfeedback.show{display:block;}
+  .qfeedback.ok{background:#E9F6EC; color:var(--green-deep);}
+  .qfeedback.bad{background:#FCEBE8; color:#7A2C22;}
+  .nextBtn{margin-top:16px; display:none;}
+  .nextBtn.show{display:inline-flex;}
+
+  .quizProgress{display:flex; gap:5px; margin-bottom:20px;}
+  .quizProgress .qp{flex:1; height:5px; border-radius:3px; background:var(--grid-line);}
+  .quizProgress .qp.done{background:var(--green);}
+  .quizProgress .qp.current{background:var(--amber);}
+
+  .resultCard{
+    background:var(--green-deep); color:var(--white); border-radius:12px; padding:40px 30px; text-align:center;
+    display:none;
+  }
+  .resultCard.show{display:block;}
+  .resultCard .bignum{font-family:'Space Grotesk',sans-serif; font-size:56px; font-weight:700; color:var(--amber);}
+  .resultCard p{color:#DCE9DF; margin:10px 0 22px; font-size:15px;}
+
+  footer{padding:36px 0; text-align:center; color:#8A897E; font-size:13px; border-top:1px solid var(--grid-line);}
+
+  @media(max-width:640px){
+    .ribbonBar{gap:10px;}
+    .ribbonGroup{padding:0 6px;}
+    .nameBox{width:64px; font-size:11px;}
+    .hero{padding-top:44px;}
+    section{padding:44px 0;}
+  }
+
+  /* Loading indicator shown while guard.js checks visibility status */
+  #guard-loading{
+    position:fixed;inset:0;background:var(--paper);z-index:999;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+    font-family:'IBM Plex Mono',monospace;color:var(--ink);font-size:.85rem;
+  }
+  #guard-loading .spin{
+    width:34px;height:34px;border-radius:50%;
+    border:3px solid rgba(27,27,24,0.15);border-top-color:var(--green-bright);
+    animation:guardspin .8s linear infinite;
+  }
+  @keyframes guardspin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<div id="guard-loading">
+  <div class="spin"></div>
+  <div>Memuat materi…</div>
+</div>
+
+<div id="konten-utama" style="visibility:hidden">
+
+<nav class="topnav">
+  <div class="wrap">
+    <div class="brand"><span class="sq"></span>Belajar Excel</div>
+    <div class="links">
+      <button type="button" data-scrollto="pengantar">Pengantar</button>
+      <button type="button" data-scrollto="istilah">Istilah</button>
+      <button type="button" data-scrollto="tampilan">Tampilan</button>
+      <button type="button" data-scrollto="kuis">Kuis</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">● Untuk pemula &mdash; belum pernah buka Excel sama sekali</span>
+    <h1>Kenalan dulu sama <span class="cellbox">sel A1</span> sebelum ngoprek rumus.</h1>
+    <p class="lead">Panduan interaktif buat kamu yang baru pertama kali membuka Microsoft Excel. Pahami istilahnya, kenali tiap bagian layarnya dengan klik langsung, lalu uji pemahamanmu lewat mini game dan kuis.</p>
+    <div class="cta-row">
+      <button type="button" class="btn btn-primary" data-scrollto="pengantar">Mulai Belajar ↓</button>
+      <button type="button" class="btn btn-ghost" data-scrollto="kuis">Langsung ke Kuis</button>
+    </div>
+    <div class="heroStrip">
+      <div class="hc"></div>
+      <div class="hc">A</div><div class="hc">B</div><div class="hc">C</div><div class="hc">D</div><div class="hc">E</div><div class="hc">F</div>
+    </div>
+    <div class="heroStrip" style="border-radius:0;">
+      <div class="hc">1</div>
+      <div class="hc filled">Nama</div><div class="hc filled">Kelas</div><div class="hc">Nilai</div><div class="hc"></div><div class="hc"></div><div class="hc"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= PENGANTAR ================= -->
+  <section id="pengantar">
+    <div class="wrap">
+      <div class="kicker">Bagian 1</div>
+      <h2 class="sectitle">Apa itu Microsoft Excel?</h2>
+      <p class="sectdesc">Excel adalah program pengolah angka (<em>spreadsheet</em>) yang menyusun data dalam bentuk tabel berisi baris dan kolom. Kamu bisa mengetik data, menghitungnya secara otomatis, membuat grafik, sampai menyusun laporan &mdash; semua dalam satu lembar kerja digital.</p>
+
+      <div class="cardgrid">
+        <div class="card">
+          <div class="ic">📊</div>
+          <h3>Mengolah data</h3>
+          <p>Menyimpan dan menyusun data dalam tabel yang rapi, seperti daftar nilai siswa atau data keuangan.</p>
+        </div>
+        <div class="card">
+          <div class="ic">🧮</div>
+          <h3>Menghitung otomatis</h3>
+          <p>Rumus akan menghitung ulang secara otomatis begitu data di sel diubah &mdash; tidak perlu hitung manual lagi.</p>
+        </div>
+        <div class="card">
+          <div class="ic">📈</div>
+          <h3>Membuat grafik</h3>
+          <p>Data angka bisa langsung diubah menjadi grafik batang, garis, atau pie agar mudah dibaca.</p>
+        </div>
+        <div class="card">
+          <div class="ic">🗂️</div>
+          <h3>Menyusun laporan</h3>
+          <p>Cocok untuk membuat daftar hadir, jadwal, rekap nilai, sampai laporan keuangan sederhana.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ISTILAH DASAR ================= -->
+  <section id="istilah" style="background:var(--paper-dim);">
+    <div class="wrap">
+      <div class="kicker">Bagian 2</div>
+      <h2 class="sectitle">Istilah dasar yang wajib kamu tahu</h2>
+      <p class="sectdesc">Sebelum menyentuh layar Excel, kenali dulu istilah-istilah ini. Nanti kamu akan lihat langsung di mana letaknya pada bagian "Kenali Tampilan Excel".</p>
+
+      <div class="termgrid" id="termGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= TAMPILAN INTERAKTIF ================= -->
+  <section id="tampilan">
+    <div class="wrap">
+      <div class="kicker">Bagian 3</div>
+      <h2 class="sectitle">Kenali tampilan Excel</h2>
+      <p class="sectdesc">Ini simulasi tampilan layar Excel. Klik tiap <strong>titik oranye</strong> untuk mengetahui nama dan fungsi bagian tersebut.</p>
+
+      <div class="explorehint"><span class="dot"></span> Klik semua titik oranye untuk membuka penjelasannya. Progres: <span id="hotProgress">0 / 10</span></div>
+      <div class="progressline" id="hotDots"></div>
+
+      <div class="mockWrap" id="mockWrap">
+        <div class="qat">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span>Buku Kerja1 - Excel</span>
+        </div>
+        <div class="ribbonTabs">
+          <div class="rt">File</div>
+          <div class="rt active">Home</div>
+          <div class="rt">Insert</div>
+          <div class="rt">Page Layout</div>
+          <div class="rt">Formulas</div>
+          <div class="rt">Data</div>
+          <div class="rt">View</div>
+        </div>
+        <div class="ribbonBar">
+          <div class="ribbonGroup"><div class="icons"><div class="micon"></div><div class="micon"></div><div class="micon"></div></div><div class="glabel">FONT</div></div>
+          <div class="ribbonGroup"><div class="icons"><div class="micon"></div><div class="micon"></div><div class="micon"></div></div><div class="glabel">ALIGNMENT</div></div>
+          <div class="ribbonGroup"><div class="icons"><div class="micon"></div><div class="micon"></div></div><div class="glabel">NUMBER</div></div>
+          <div class="ribbonGroup"><div class="icons"><div class="micon"></div><div class="micon"></div></div><div class="glabel">CELLS</div></div>
+        </div>
+        <div class="formulaRow">
+          <div class="nameBox">B2</div>
+          <div class="fx">fx</div>
+          <div class="fbar">=A2*10</div>
+        </div>
+        <div class="sheetGrid" id="sheetGrid">
+          <!-- filled by JS -->
+        </div>
+        <div class="sheetTabsRow">
+          <div class="sheetTab active">Sheet1</div>
+          <div class="sheetTab">Sheet2</div>
+          <div class="sheetTab">+</div>
+        </div>
+        <div class="statusBar">
+          <span>Ready</span>
+          <span>Rata-rata: 42  Jumlah: 84</span>
+        </div>
+      </div>
+
+      <div class="infoPanel" id="infoPanel">
+        <div class="ip-title"><span id="ipIcon">🟠</span> <span id="ipTitle"></span> <span class="ip-badge" id="ipBadge"></span></div>
+        <p id="ipDesc"></p>
+      </div>
+
+      <!-- MINI GAME -->
+      <div class="gamebox">
+        <div class="gtop">
+          <h3>🎮 Mini Game &mdash; Tebak Bagian Layar</h3>
+          <div class="score">Skor: <span id="gScore">0</span> / <span id="gTotal">0</span></div>
+        </div>
+        <div class="prompt" id="gPrompt">Tekan mulai untuk main</div>
+        <button class="btn btn-primary" id="gStartBtn">Mulai Main</button>
+        <div class="feedback" id="gFeedback"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= KUIS ================= -->
+  <section id="kuis" style="background:var(--paper-dim);">
+    <div class="wrap">
+      <div class="kicker">Bagian 4</div>
+      <h2 class="sectitle">Kuis &mdash; Uji Pemahamanmu</h2>
+      <p class="sectdesc">8 pertanyaan seputar istilah dan tampilan Excel yang sudah kamu pelajari. Jawab satu per satu, langsung ada penjelasan setelah kamu menjawab.</p>
+
+      <div class="quizProgress" id="quizProgress"></div>
+
+      <div class="quizCard" id="quizCard">
+        <div class="qhead">
+          <span class="qnum" id="qNum">Soal 1 / 8</span>
+        </div>
+        <div class="qtext" id="qText"></div>
+        <div class="options" id="qOptions"></div>
+        <div class="qfeedback" id="qFeedback"></div>
+        <button class="btn btn-primary nextBtn" id="nextBtn">Soal Berikutnya →</button>
+      </div>
+
+      <div class="resultCard" id="resultCard">
+        <div class="bignum" id="resultScore">0/8</div>
+        <p id="resultMsg">Coba lagi untuk skor lebih tinggi!</p>
+        <button class="btn btn-primary" id="retryBtn">Ulangi Kuis</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Dibuat untuk membantu pemula mengenal Microsoft Excel — klik, coba, dan pelajari sambil praktik.
+</footer>
+
+<script>
+/* ============ NAVIGASI: gulir halus ke tiap bagian tanpa link jangkar (#) ============ */
+document.querySelectorAll('[data-scrollto]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const target = document.getElementById(btn.dataset.scrollto);
+    if(target){
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  });
+});
+
+/* ============ DATA: bagian layar Excel (dipakai di glosarium + tampilan + game) ============ */
+const parts = [
+  {id:'qat', name:'Quick Access Toolbar', badge:'Pojok kiri atas', desc:'Kumpulan tombol pintas yang paling sering dipakai, misalnya Simpan, Undo, dan Redo, supaya tidak perlu buka menu.'},
+  {id:'ribbontab', name:'Ribbon Tab', badge:'Home, Insert, dst', desc:'Deretan tab kategori perintah. Setiap tab (Home, Insert, Formulas, dst) berisi kumpulan tombol yang berbeda fungsi.'},
+  {id:'ribbon', name:'Ribbon / Toolbar', badge:'Di bawah tab', desc:'Area tombol-tombol perintah itu sendiri, dikelompokkan menjadi grup kecil seperti Font, Alignment, dan Number.'},
+  {id:'namebox', name:'Name Box (Kotak Nama)', badge:'Kiri atas grid', desc:'Menunjukkan alamat sel yang sedang aktif, misalnya "B2". Bisa juga dipakai untuk langsung meloncat ke sel tertentu.'},
+  {id:'fx', name:'Tombol Insert Function (fx)', badge:'Sebelah Formula Bar', desc:'Tombol untuk membuka daftar fungsi/rumus Excel yang bisa dipakai, seperti SUM atau AVERAGE.'},
+  {id:'formulabar', name:'Formula Bar', badge:'Baris rumus', desc:'Menampilkan isi asli dari sel yang aktif, termasuk rumus yang sedang dipakai (bukan hasil akhirnya saja).'},
+  {id:'colhead', name:'Column Header (Kepala Kolom)', badge:'Huruf A, B, C…', desc:'Penanda kolom yang berjajar ke samping, memakai huruf mulai dari A, B, C, dan seterusnya.'},
+  {id:'rowhead', name:'Row Header (Kepala Baris)', badge:'Angka 1, 2, 3…', desc:'Penanda baris yang berjajar ke bawah, memakai angka mulai dari 1, 2, 3, dan seterusnya.'},
+  {id:'activecell', name:'Sel Aktif (Active Cell)', badge:'Kotak bergaris hijau', desc:'Sel yang sedang dipilih/aktif, ditandai garis kotak lebih tebal. Alamatnya muncul di Name Box.'},
+  {id:'sheettab', name:'Sheet Tab', badge:'Bawah lembar kerja', desc:'Tab untuk berpindah antar worksheet (lembar kerja) dalam satu file Excel yang sama.'},
+];
+
+const glossary = [
+  {name:'Workbook (Buku Kerja)', code:'.xlsx', desc:'Satu file Excel secara keseluruhan. Satu workbook bisa berisi banyak worksheet di dalamnya.'},
+  {name:'Worksheet (Lembar Kerja)', code:'Sheet1', desc:'Satu halaman/lembar kerja tempat kamu mengetik dan mengolah data, berisi baris dan kolom.'},
+  {name:'Cell (Sel)', code:'B2', desc:'Kotak kecil tempat kamu mengetik data, hasil pertemuan antara satu kolom dan satu baris.'},
+  {name:'Column (Kolom)', code:'A, B, C…', desc:'Kumpulan sel yang berjajar tegak ke bawah, diberi label huruf.'},
+  {name:'Row (Baris)', code:'1, 2, 3…', desc:'Kumpulan sel yang berjajar mendatar ke samping, diberi label angka.'},
+  {name:'Cell Reference (Alamat Sel)', code:'=A1', desc:'Cara menyebut lokasi sebuah sel, gabungan huruf kolom dan angka baris, contoh A1 atau C10.'},
+  {name:'Range', code:'A1:A5', desc:'Sekumpulan sel yang dipilih sekaligus, ditulis dengan tanda titik dua di antara sel awal dan akhir.'},
+  {name:'Formula (Rumus)', code:'=SUM(A1:A5)', desc:'Perintah untuk menghitung sesuatu secara otomatis, selalu diawali tanda sama dengan (=).'},
+  {name:'Fill Handle', code:'⊹', desc:'Kotak kecil di pojok kanan-bawah sel aktif, bisa ditarik untuk menyalin data atau rumus dengan cepat.'},
+  {name:'Ribbon', code:'Home / Insert', desc:'Kumpulan menu dan tombol perintah di bagian atas jendela Excel, tersusun dalam beberapa tab.'},
+];
+
+/* ============ RENDER: Glosarium ============ */
+const termGrid = document.getElementById('termGrid');
+glossary.forEach((g,i)=>{
+  const div = document.createElement('div');
+  div.className='term';
+  div.innerHTML = `<span class="tnum">Istilah ${String(i+1).padStart(2,'0')}</span>
+    <h3>${g.name} <code>${g.code}</code></h3>
+    <p>${g.desc}</p>`;
+  termGrid.appendChild(div);
+});
+
+/* ============ RENDER: Sheet grid (kolom A-F, baris 1-8) ============ */
+const sheetGrid = document.getElementById('sheetGrid');
+const cols = ['A','B','C','D','E','F'];
+const rows = [1,2,3,4,5,6,7,8];
+let html = `<div class="corner"></div>`;
+cols.forEach(c=> html += `<div class="colhead" data-col="${c}">${c}</div>`);
+rows.forEach(r=>{
+  html += `<div class="rowhead" data-row="${r}">${r}</div>`;
+  cols.forEach(c=>{
+    const isActive = (c==='B' && r===2);
+    let content = '';
+    if(r===1 && c==='A') content='Nama';
+    if(r===1 && c==='B') content='Nilai';
+    if(r===2 && c==='A') content='Wik';
+    if(r===2 && c==='B') content='84';
+    html += `<div class="cell${isActive?' active':''}" data-cell="${c}${r}">${content}${isActive?'<div class="fillhandle"></div>':''}</div>`;
+  });
+});
+sheetGrid.innerHTML = html;
+
+/* ============ POSITION HOTSPOTS ============ */
+function placeHotspots(){
+  document.querySelectorAll('.hot').forEach(h=>h.remove());
+  const mock = document.getElementById('mockWrap');
+  const mr = mock.getBoundingClientRect();
+
+  function addHot(id, targetEl, label){
+    if(!targetEl) return;
+    const r = targetEl.getBoundingClientRect();
+    const x = r.left - mr.left + r.width/2;
+    const y = r.top - mr.top + r.height/2;
+    const b = document.createElement('div');
+    b.className='hot';
+    b.dataset.id = id;
+    b.dataset.label = label;
+    b.style.left = x+'px';
+    b.style.top = y+'px';
+    b.textContent = (seenParts.has(id) && !gameActive) ? '✓' : label;
+    if(seenParts.has(id) && !gameActive) b.classList.add('done');
+    b.addEventListener('click', ()=> showInfo(id, b));
+    mock.appendChild(b);
+  }
+
+  addHot('qat', document.querySelector('.qat .dots'), '1');
+  addHot('ribbontab', document.querySelector('.rt.active'), '2');
+  addHot('ribbon', document.querySelectorAll('.ribbonGroup')[1], '3');
+  addHot('namebox', document.querySelector('.nameBox'), '4');
+  addHot('fx', document.querySelector('.fx'), '5');
+  addHot('formulabar', document.querySelector('.fbar'), '6');
+  addHot('colhead', document.querySelector('.colhead[data-col="C"]'), '7');
+  addHot('rowhead', document.querySelector('.rowhead[data-row="4"]'), '8');
+  addHot('activecell', document.querySelector('.cell.active'), '9');
+  addHot('sheettab', document.querySelector('.sheetTab.active'), '10');
+}
+
+const seenParts = new Set();
+let gameOrder = [];
+let gameIndex = 0;
+let gScore = 0;
+let gTotal = 0;
+let gameActive = false;
+
+function updateHotProgress(){
+  document.getElementById('hotProgress').textContent = `${seenParts.size} / ${parts.length}`;
+  const dotsWrap = document.getElementById('hotDots');
+  dotsWrap.innerHTML = parts.map(p=>`<span class="pdot ${seenParts.has(p.id)?'on':''}"></span>`).join('');
+}
+
+function showInfo(id, btnEl){
+  const p = parts.find(x=>x.id===id);
+  if(!p) return;
+  seenParts.add(id);
+  if(btnEl && !gameActive){ btnEl.classList.add('done'); btnEl.textContent='✓'; }
+  updateHotProgress();
+  document.getElementById('ipTitle').textContent = p.name;
+  document.getElementById('ipBadge').textContent = p.badge;
+  document.getElementById('ipDesc').textContent = p.desc;
+  const panel = document.getElementById('infoPanel');
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+/* Menyeragamkan tampilan semua nomor petunjuk (angka polos, tanpa checkmark/warna beda)
+   supaya tidak ada petunjuk visual siapa jawaban yang benar saat main game. */
+function setHotspotsNeutral(){
+  document.querySelectorAll('.hot').forEach(h=>{
+    h.classList.remove('done');
+    h.textContent = h.dataset.label;
+  });
+}
+/* Mengembalikan tampilan checkmark hijau untuk bagian yang sudah pernah dipelajari. */
+function refreshHotspotVisuals(){
+  document.querySelectorAll('.hot').forEach(h=>{
+    if(seenParts.has(h.dataset.id)){
+      h.classList.add('done');
+      h.textContent = '✓';
+    } else {
+      h.classList.remove('done');
+      h.textContent = h.dataset.label;
+    }
+  });
+}
+
+placeHotspots();
+updateHotProgress();
+
+/* Reposisi ulang setelah font & seluruh halaman selesai dimuat, supaya titik tidak meleset di HP */
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(placeHotspots);
+}
+window.addEventListener('load', placeHotspots);
+window.addEventListener('orientationchange', ()=> setTimeout(placeHotspots, 300));
+window.addEventListener('resize', ()=>{ clearTimeout(window._rtimer); window._rtimer = setTimeout(placeHotspots, 200); });
+
+/* ============ MINI GAME: Tebak Bagian ============ */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+document.getElementById('gStartBtn').addEventListener('click', ()=>{
+  gameOrder = shuffle(parts);
+  gameIndex = 0; gScore = 0; gTotal = 0;
+  gameActive = true;
+  document.getElementById('gScore').textContent = gScore;
+  document.getElementById('gTotal').textContent = gTotal;
+  document.getElementById('gStartBtn').textContent = 'Main Ulang';
+  setHotspotsNeutral();
+  nextGameRound();
+});
+
+function nextGameRound(){
+  document.getElementById('gFeedback').textContent = '';
+  document.getElementById('gFeedback').className = 'feedback';
+  if(gameIndex >= gameOrder.length){
+    document.getElementById('gPrompt').textContent = `Selesai! Skor akhir: ${gScore} / ${gTotal} 🎉`;
+    gameActive = false;
+    refreshHotspotVisuals();
+    return;
+  }
+  const target = gameOrder[gameIndex];
+  document.getElementById('gPrompt').innerHTML = `Klik bagian bernama: <strong>&nbsp;${target.name}</strong>`;
+}
+
+document.getElementById('mockWrap').addEventListener('click', (e)=>{
+  const hot = e.target.closest('.hot');
+  if(!hot || !gameActive) return;
+  const target = gameOrder[gameIndex];
+  gTotal++;
+  const fb = document.getElementById('gFeedback');
+  if(hot.dataset.id === target.id){
+    gScore++;
+    fb.textContent = `Benar! Itu adalah ${target.name}.`;
+    fb.className = 'feedback ok';
+  } else {
+    const wrongPart = parts.find(p=>p.id===hot.dataset.id);
+    fb.textContent = `Belum tepat, itu ${wrongPart ? wrongPart.name : 'bagian lain'}. Yang benar: ${target.name}.`;
+    fb.className = 'feedback bad';
+    hot.classList.add('shake');
+    setTimeout(()=>hot.classList.remove('shake'), 300);
+  }
+  document.getElementById('gScore').textContent = gScore;
+  document.getElementById('gTotal').textContent = gTotal;
+  gameIndex++;
+  setTimeout(nextGameRound, 1100);
+});
+
+/* ============ QUIZ ============ */
+const quiz = [
+  {q:'Kotak pertemuan antara satu kolom dan satu baris di Excel disebut apa?', opts:['Range','Cell (Sel)','Sheet','Ribbon'], a:1,
+   fb:'Betul, pertemuan satu kolom dan satu baris disebut sel (cell), tempat kita mengetik data.'},
+  {q:'Satu file Excel yang bisa memuat beberapa lembar kerja sekaligus disebut?', opts:['Worksheet','Workbook','Formula Bar','Range'], a:1,
+   fb:'Workbook adalah satu file Excel secara keseluruhan, di dalamnya bisa ada banyak worksheet.'},
+  {q:'Kotak yang menampilkan alamat sel yang sedang aktif (misalnya "B2") disebut?', opts:['Name Box','Fill Handle','Sheet Tab','Formula Bar'], a:0,
+   fb:'Name Box menampilkan alamat sel yang sedang aktif, dan bisa dipakai untuk meloncat ke sel tertentu.'},
+  {q:'Baris yang menampilkan rumus atau isi asli dari sel yang aktif disebut?', opts:['Ribbon','Formula Bar','Column Header','Quick Access Toolbar'], a:1,
+   fb:'Formula Bar menampilkan isi asli sel aktif, termasuk rumus yang sedang dipakai, bukan hanya hasilnya.'},
+  {q:'Alamat sel seperti "C10" (gabungan huruf kolom dan angka baris) disebut?', opts:['Range','Cell Reference','Sheet Tab','Fill Handle'], a:1,
+   fb:'Itu disebut cell reference atau referensi/alamat sel, gabungan huruf kolom dan nomor baris.'},
+  {q:'Kumpulan beberapa sel yang dipilih sekaligus, misalnya A1 sampai A5, disebut?', opts:['Range','Workbook','Cell','Formula'], a:0,
+   fb:'Kumpulan sel yang dipilih bersama, contoh A1:A5, disebut range.'},
+  {q:'Kotak kecil di pojok kanan-bawah sel aktif yang bisa ditarik untuk menyalin data disebut?', opts:['Name Box','Ribbon Tab','Fill Handle','Row Header'], a:2,
+   fb:'Fill handle adalah kotak kecil di pojok sel aktif, berguna untuk menyalin data/rumus dengan cepat.'},
+  {q:'Kumpulan menu perintah di bagian atas Excel seperti Home, Insert, dan Formulas disebut?', opts:['Ribbon','Sheet Tab','Status Bar','Name Box'], a:0,
+   fb:'Bagian ini disebut Ribbon, berisi tab-tab kategori perintah beserta tombol-tombolnya.'},
+];
+
+let qIndex = 0, qScore = 0, answered = false;
+
+function renderQuizProgress(){
+  const wrap = document.getElementById('quizProgress');
+  wrap.innerHTML = quiz.map((_,i)=>{
+    let cls='qp';
+    if(i < qIndex) cls += ' done';
+    else if(i === qIndex) cls += ' current';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+}
+
+function renderQuestion(){
+  answered = false;
+  const item = quiz[qIndex];
+  document.getElementById('qNum').textContent = `Soal ${qIndex+1} / ${quiz.length}`;
+  document.getElementById('qText').textContent = item.q;
+  const optWrap = document.getElementById('qOptions');
+  optWrap.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  item.opts.forEach((opt,i)=>{
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.innerHTML = `<span class="oletter">${letters[i]}</span><span>${opt}</span>`;
+    b.addEventListener('click', ()=> selectAnswer(i));
+    optWrap.appendChild(b);
+  });
+  document.getElementById('qFeedback').className = 'qfeedback';
+  document.getElementById('nextBtn').className = 'btn btn-primary nextBtn';
+  renderQuizProgress();
+}
+
+function selectAnswer(i){
+  if(answered) return;
+  answered = true;
+  const item = quiz[qIndex];
+  const opts = document.querySelectorAll('#qOptions .opt');
+  opts.forEach((o,idx)=>{
+    o.classList.add('disabled');
+    if(idx === item.a) o.classList.add('correct');
+    else if(idx === i) o.classList.add('wrong');
+  });
+  const fb = document.getElementById('qFeedback');
+  if(i === item.a){
+    qScore++;
+    fb.textContent = '✔ Benar! ' + item.fb;
+    fb.className = 'qfeedback show ok';
+  } else {
+    fb.textContent = '✘ Kurang tepat. ' + item.fb;
+    fb.className = 'qfeedback show bad';
+  }
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  qIndex++;
+  if(qIndex >= quiz.length){
+    finishQuiz();
+  } else {
+    renderQuestion();
+  }
+});
+
+function finishQuiz(){
+  document.getElementById('quizCard').style.display = 'none';
+  const result = document.getElementById('resultCard');
+  result.classList.add('show');
+  document.getElementById('resultScore').textContent = `${qScore}/${quiz.length}`;
+  let msg = '';
+  if(qScore === quiz.length) msg = 'Sempurna! Kamu sudah paham dasar-dasar tampilan Excel. 🎉';
+  else if(qScore >= quiz.length*0.6) msg = 'Bagus! Coba tinjau ulang bagian yang masih salah, lalu jajal lagi.';
+  else msg = 'Belum apa-apa, ulangi lagi materi "Istilah Dasar" dan "Kenali Tampilan", lalu coba kuis sekali lagi.';
+  document.getElementById('resultMsg').textContent = msg;
+  renderQuizProgress();
+  document.querySelectorAll('.quizProgress .qp').forEach(el=>el.classList.add('done'));
+}
+
+document.getElementById('retryBtn').addEventListener('click', ()=>{
+  qIndex = 0; qScore = 0;
+  document.getElementById('resultCard').classList.remove('show');
+  document.getElementById('quizCard').style.display = 'block';
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+
+</div><!-- /#konten-utama -->
+
+<script>const MODUL_ID = "INF-102";</script>
+<script src="../config.js"></script>
+<script src="../guard.js"></script>
+
+</body>
+</html>
