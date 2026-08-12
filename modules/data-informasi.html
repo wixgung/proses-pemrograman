@@ -728,29 +728,6 @@ document.getElementById('g2check').addEventListener('click', ()=>{
   document.getElementById('g2status').textContent = allRight ? '🎉 Urutan kalian tepat!' : 'Masih ada yang belum pas, coba lagi.';
 });
 
-/* ---------- Kuis ---------- */
-const quizQ = [
-  {q:'Apa yang paling tepat menggambarkan "data"?', opts:['Fakta mentah yang belum tentu punya makna sendiri','Kesimpulan akhir dari sebuah laporan','Diagram yang sudah jadi','Keputusan yang diambil pimpinan sekolah'], correct:0},
-  {q:'Kapan data berubah menjadi informasi?', opts:['Saat data disimpan di komputer','Setelah data dikumpulkan, diolah, dan dianalisis sehingga punya makna','Saat data ditulis di kertas','Saat data dihapus'], correct:1},
-  {q:'"Kreatif membuat desain poster kelompok" adalah contoh data jenis apa?', opts:['Kuantitatif','Kualitatif','Statistik','Numerik'], correct:1},
-  {q:'"Jumlah anggota kelompok: 5 orang" adalah contoh data jenis apa?', opts:['Kualitatif','Deskriptif','Kuantitatif','Naratif'], correct:2},
-  {q:'Saat kalian menuliskan kelebihan teman berdasarkan kebiasaan yang pernah kalian lihat di permainan "Tebak Siapa Aku?", itu termasuk cara mengumpulkan data melalui...', opts:['Observasi','Sensor otomatis','Dokumentasi arsip','Angket tertulis'], correct:0},
-  {q:'Urutan proses data menjadi informasi yang benar adalah...', opts:['Mengolah → Mengumpulkan → Memvisualisasikan → Menganalisis','Mengumpulkan → Mengolah → Menganalisis → Memvisualisasikan','Menganalisis → Mengumpulkan → Mengolah → Memvisualisasikan','Memvisualisasikan → Menganalisis → Mengolah → Mengumpulkan'], correct:1},
-  {q:'Kelompokmu menulis "Jumlah data kelebihan yang diperoleh: 25 data" di LKPD. Karena berbentuk angka, apakah ini sudah termasuk informasi?', opts:['Ya, karena semua angka pasti informasi','Belum, ini masih data — baru hasil menghitung, belum diberi makna atau konteks','Ya, karena sudah dihitung dengan benar','Belum, karena angka bukan data'], correct:1},
-  {q:'Mengapa data perlu dikelompokkan sebelum dianalisis?', opts:['Supaya terlihat lebih banyak','Agar lebih rapi dan mudah dipahami sehingga polanya lebih mudah ditemukan','Karena wajib menurut aturan sekolah','Supaya tidak perlu dianalisis lagi'], correct:1},
-  {q:'Kenapa hasil analisis biasanya divisualisasikan dalam bentuk diagram atau grafik?', opts:['Supaya lebih berwarna saja','Agar informasi lebih mudah dipahami dan dibandingkan sekilas pandang','Agar datanya bertambah banyak','Karena tidak butuh angka lagi'], correct:1},
-  {q:'Pada pertemuan berikutnya, alat apa yang akan digunakan untuk mengolah data lebih cepat dan akurat?', opts:['Microsoft Word','Microsoft Excel','Kertas HVS','Papan tulis'], correct:1},
-];
-const quizWrap = document.getElementById('quizQuestions');
-quizWrap.innerHTML = quizQ.map((item,i)=>`
-  <div class="quiz-q">
-    <div class="qn">Soal ${i+1} dari ${quizQ.length}</div>
-    <div class="qtext">${item.q}</div>
-    ${item.opts.map((o,j)=>`
-      <label class="opt"><input type="radio" name="quizq${i}" value="${j}"> ${o}</label>
-    `).join('')}
-  </div>`).join('');
-
 /* ---------- Mode Individu / Kelompok ---------- */
 let modeAktif = 'Individu';
 const btnIndividu = document.getElementById('modeIndividu');
